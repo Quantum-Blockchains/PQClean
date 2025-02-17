@@ -61,9 +61,18 @@ int crypto_kem_keypair(uint8_t *pk,
                        uint8_t *sk) {
     uint8_t coins[2 * KYBER_SYMBYTES];
     randombytes(coins, 2 * KYBER_SYMBYTES);
-    for (size_t i = 0; i < 2 * KYBER_SYMBYTES; i++) {
-        printf("%d ", coins[i]);
-    }
+    // for (size_t i = 0; i < 2 * KYBER_SYMBYTES; i++) {
+    //     printf("%d ", coins[i]);
+    // }
+    crypto_kem_keypair_derand(pk, sk, coins);
+    return 0;
+}
+
+int crypto_kem_keypair_from_seed(uint8_t *seed, uint8_t *pk,
+    uint8_t *sk) {
+    uint8_t coins[2 * KYBER_SYMBYTES];
+    // randombytes(coins, 2 * KYBER_SYMBYTES);
+    memcpy(coins, seed, 2 * KYBER_SYMBYTES);
     crypto_kem_keypair_derand(pk, sk, coins);
     return 0;
 }
