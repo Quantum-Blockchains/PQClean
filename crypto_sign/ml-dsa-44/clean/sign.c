@@ -8,6 +8,13 @@
 #include "symmetric.h"
 #include <stdint.h>
 
+int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+    uint8_t seed[SEEDBYTES];
+    randombytes(seed, SEEDBYTES);
+    PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair_from_seed(seed, pk, sk);
+    return 0;
+}
+
 /*************************************************
 * Name:        PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair
 *
@@ -20,7 +27,7 @@
 *
 * Returns 0 (success)
 **************************************************/
-int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair_from_seed(uint8_t *seed, uint8_t *pk, uint8_t *sk) {
     uint8_t seedbuf[2 * SEEDBYTES + CRHBYTES];
     uint8_t tr[TRBYTES];
     const uint8_t *rho, *rhoprime, *key;
@@ -29,7 +36,12 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     polyveck s2, t1, t0;
 
     /* Get randomness for rho, rhoprime and key */
-    randombytes(seedbuf, SEEDBYTES);
+    // randombytes(seedbuf, SEEDBYTES);
+    uint8_t *dst = seedbuf;
+    const uint8_t *src = seed;
+    for (size_t i = 0; i < SEEDBYTES; i++) {
+        *dst++ = *src++;
+    }
     seedbuf[SEEDBYTES + 0] = K;
     seedbuf[SEEDBYTES + 1] = L;
     shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
