@@ -14,7 +14,7 @@ int PQCLEAN_MLKEM512_CLEAN_crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, c
 
 int PQCLEAN_MLKEM512_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
 
-int PQCLEAN_MLKEM512_CLEAN_crypto_kem_keypair_from_seed(uint8_t *pk, uint8_t *sk);
+int PQCLEAN_MLKEM512_CLEAN_crypto_kem_keypair_from_seed(uint8_t *seed, uint8_t *pk, uint8_t *sk);
 
 int PQCLEAN_MLKEM512_CLEAN_crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *coins);
 
