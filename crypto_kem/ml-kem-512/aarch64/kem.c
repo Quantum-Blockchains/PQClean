@@ -62,7 +62,7 @@ int crypto_kem_keypair(uint8_t *pk,
     uint8_t coins[2 * KYBER_SYMBYTES];
     randombytes(coins, 2 * KYBER_SYMBYTES);
     for (size_t i = 0; i < 2 * KYBER_SYMBYTES; i++) {
-        printf("%02x", coins[i]);
+        printf("%d", coins[i]);
     }
     crypto_kem_keypair_derand(pk, sk, coins);
     return 0;
