@@ -70,9 +70,11 @@ int crypto_kem_keypair(uint8_t *pk,
 
 int crypto_kem_keypair_from_seed(uint8_t *seed, uint8_t *pk,
     uint8_t *sk) {
+    uint8_t coins_tmp[KYBER_SYMBYTES];
     uint8_t coins[2 * KYBER_SYMBYTES];
-    // randombytes(coins, 2 * KYBER_SYMBYTES);
-    memcpy(coins, seed, 2 * KYBER_SYMBYTES);
+    randombytes(coins_tmp, KYBER_SYMBYTES);
+    memcpy(coins, seed, KYBER_SYMBYTES);
+    memcpy(coins + KYBER_SYMBYTES, coins_tmp, KYBER_SYMBYTES);
     crypto_kem_keypair_derand(pk, sk, coins);
     return 0;
 }
