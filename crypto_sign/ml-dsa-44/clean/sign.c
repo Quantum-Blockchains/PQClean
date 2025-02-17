@@ -7,6 +7,7 @@
 #include "sign.h"
 #include "symmetric.h"
 #include <stdint.h>
+#include <string.h>
 
 int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     uint8_t seed[SEEDBYTES];
@@ -37,11 +38,7 @@ int PQCLEAN_MLDSA44_CLEAN_crypto_sign_keypair_from_seed(uint8_t *seed, uint8_t *
 
     /* Get randomness for rho, rhoprime and key */
     // randombytes(seedbuf, SEEDBYTES);
-    uint8_t *dst = seedbuf;
-    const uint8_t *src = seed;
-    for (size_t i = 0; i < SEEDBYTES; i++) {
-        *dst++ = *src++;
-    }
+    memcpy(seedbuf, seed, SEEDBYTES);
     seedbuf[SEEDBYTES + 0] = K;
     seedbuf[SEEDBYTES + 1] = L;
     shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
