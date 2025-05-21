@@ -16,6 +16,9 @@
 #define crypto_sign_keypair DILITHIUM_NAMESPACE(crypto_sign_keypair)
 int crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
 
+#define crypto_sign_keypair_from_seed DILITHIUM_NAMESPACE(crypto_sign_keypair_from_seed)
+int crypto_sign_keypair_from_seed(uint8_t *seed, uint8_t *pk, uint8_t *sk);
+
 #define crypto_sign_signature_ctx DILITHIUM_NAMESPACE(crypto_sign_signature_ctx)
 int crypto_sign_signature_ctx(uint8_t *sig, size_t *siglen,
                               const uint8_t *m, size_t mlen,

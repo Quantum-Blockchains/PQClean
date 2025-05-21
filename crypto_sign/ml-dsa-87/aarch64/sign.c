@@ -40,6 +40,14 @@
 #include "sign.h"
 #include "symmetric.h"
 #include <stdint.h>
+#include <string.h>
+
+int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+    uint8_t seed[SEEDBYTES];
+    randombytes(seed, SEEDBYTES);
+    crypto_sign_keypair_from_seed(seed, pk, sk);
+    return 0;
+}
 
 /*************************************************
 * Name:        crypto_sign_keypair
@@ -53,7 +61,7 @@
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+int crypto_sign_keypair_from_seed(uint8_t *seed, uint8_t *pk, uint8_t *sk) {
     uint8_t seedbuf[2 * SEEDBYTES + CRHBYTES];
     uint8_t tr[TRBYTES];
     const uint8_t *rho, *rhoprime, *key;
@@ -62,7 +70,8 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     polyveck s2, t1, t0;
 
     /* Get randomness for rho, rhoprime and key */
-    randombytes(seedbuf, SEEDBYTES);
+    // randombytes(seedbuf, SEEDBYTES);
+    memcpy(seedbuf, seed, SEEDBYTES);
     seedbuf[SEEDBYTES + 0] = K;
     seedbuf[SEEDBYTES + 1] = L;
     shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);

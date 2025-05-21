@@ -39,6 +39,13 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
     }
 }
 
+int PQCLEAN_MLDSA65_AVX2_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+    uint8_t seed[SEEDBYTES];
+    randombytes(seed, SEEDBYTES);
+    PQCLEAN_MLDSA65_AVX2_crypto_sign_keypair_from_seed(seed, pk, sk);
+    return 0;
+}
+
 /*************************************************
 * Name:        PQCLEAN_MLDSA65_AVX2_crypto_sign_keypair
 *
@@ -51,7 +58,7 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
 *
 * Returns 0 (success)
 **************************************************/
-int PQCLEAN_MLDSA65_AVX2_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+int PQCLEAN_MLDSA65_AVX2_crypto_sign_keypair_from_seed(uint8_t *seed, uint8_t *pk, uint8_t *sk) {
     unsigned int i;
     uint8_t seedbuf[2 * SEEDBYTES + CRHBYTES];
     const uint8_t *rho, *rhoprime, *key;
@@ -61,7 +68,8 @@ int PQCLEAN_MLDSA65_AVX2_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     poly t1, t0;
 
     /* Get randomness for rho, rhoprime and key */
-    randombytes(seedbuf, SEEDBYTES);
+    // randombytes(seedbuf, SEEDBYTES);
+    memcpy(seedbuf, seed, SEEDBYTES);
     seedbuf[SEEDBYTES + 0] = K;
     seedbuf[SEEDBYTES + 1] = L;
     shake256(seedbuf, 2 * SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES + 2);
